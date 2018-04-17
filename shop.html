@@ -1,0 +1,54 @@
+<!doctype html>
+<html ng-app="shopApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+<body ng-controller="shopController">
+    <div class="page-header col-sm-12">
+        <h1> Список товаров </h1>
+        <a class="pull-right" href="cart.html">КОРЗИНА -></a>
+    </div>
+    <div class="panel">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>В корзину</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list.items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                    <td><button ng-click="addItem($index, item.name)" class="btn btn-xs btn-default"><span  class="glyphicon glyphicon-shopping-cart"></span></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="model.js"></script>
+<script>
+var cart = localStorage.getItem('cart');
+
+if (!cart) { 
+    cart = []; 
+}
+else {
+    cart = cart.split(",");
+}
+
+purchaseApp = angular.module("shopApp", []);
+    purchaseApp.controller("shopController", function ($scope) {
+    $scope.list = model;
+    $scope.addItem = function (index, name) {
+        cart.push(index);
+        localStorage.setItem('cart', cart);
+        alert('"'+name+'" добавлено в корзину');
+    }
+});
+</script>
+</body>
+</html>

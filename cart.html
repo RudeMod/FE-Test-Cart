@@ -1,0 +1,61 @@
+<!doctype html>
+<html ng-app="cartApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    td span {
+        color: red;
+    }
+</style>
+</head>
+<body ng-controller="cartController">
+    <div class="page-header col-sm-12">
+        <h1> Корзина </h1>
+        <a class="pull-right" href="shop.html"><- К списку товаров</a>
+    </div>
+    <div class="panel">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Удалить из корзины</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list.items track by $index">
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                    <td><button ng-click="remItem($index)" class="btn btn-xs btn-default"><span  class="glyphicon glyphicon-shopping-cart"></span></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="model.js"></script>
+<script>
+var cart = localStorage.getItem('cart');
+
+cart = (!cart) ? [] : cart.split(",");
+
+var cartModel = {items:[]};
+
+cart.forEach(function(item) {
+    cartModel.items.push(model.items[parseFloat(item)]);
+});
+
+purchaseApp = angular.module("cartApp", []);
+    purchaseApp.controller("cartController", function ($scope) {
+    $scope.list = cartModel;
+    $scope.remItem = function (index) {
+        cart.splice(index,1);
+        $scope.list.items.splice(index,1);
+        
+        localStorage.setItem('cart', cart);
+    }
+});
+</script>
+</body>
+</html>
